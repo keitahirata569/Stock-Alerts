@@ -6,7 +6,6 @@
 
 <title>入荷連絡</title>
 
-<!-- アイコン設定 -->
 <link rel="icon" href="icon.png">
 <link rel="apple-touch-icon" href="icon.png">
 <link rel="manifest" href="manifest.json">
@@ -16,33 +15,61 @@
   body {
     font-family: sans-serif;
     padding: 16px;
-    background: #f5f5f5;
+    background: #f0f2f5;
+  }
+
+  .card {
+    background: white;
+    border-radius: 18px;
+    padding: 20px;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.1);
   }
 
   h2 {
     text-align: center;
-    font-size: 22px;
+    font-size: 26px;
+    margin-bottom: 8px;
+  }
+
+  .sub {
+    text-align: center;
+    font-size: 14px;
+    color: #666;
     margin-bottom: 20px;
   }
 
   button {
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+
     width: 100%;
-    padding: 22px;
-    margin: 12px 0;
-    font-size: 20px;
+    padding: 18px;
+    margin: 10px 0;
+    font-size: 18px;
     border: none;
     border-radius: 12px;
     color: white;
+
+    transition: all 0.15s ease;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  }
+
+  button img {
+    width: 24px;
+    height: 24px;
+    filter: brightness(0) invert(1); /* 白アイコン化 */
   }
 
   .blue { background: #0078d4; }
-  .green { background: #28a745; }
   .orange { background: #f39c12; }
   .red { background: #d9534f; }
 
   button:active {
-    opacity: 0.8;
+    transform: translateY(2px);
+    filter: brightness(0.9);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
   }
 </style>
 
@@ -68,77 +95,47 @@ function sendMail(to, cc, subject, body) {
 </head>
 <body>
 
+<div class="card">
+
 <h2>入荷連絡</h2>
+<div class="sub">連絡したい部署を選択してください</div>
 
 <button class="blue"
-onclick="sendMail(
-'seikan-bankin@toyodensei.co.jp',
-'seikan-gyoumu@toyodensei.co.jp',
-'板金_購入品入荷(配信)',
-'購入品が入荷しましたので引き取りをお願いいたします。\n※本アドレスは送信専用です。'
-)">
-板金
+onclick="sendMail('seikan-bankin@toyodensei.co.jp','seikan-gyoumu@toyodensei.co.jp','板金_購入品入荷(配信)','購入品が入荷しましたので引き取りをお願いいたします。\n※本アドレスは送信専用です。')">
+<img src="sheet_metal.png"> 板金
 </button>
 
 <button class="blue"
-onclick="sendMail(
-'seikan-tosou@toyodensei.co.jp',
-'seikan-gyoumu@toyodensei.co.jp',
-'塗装_購入品入荷(配信)',
-'購入品が入荷しましたので引き取りをお願いいたします。\n※本アドレスは送信専用です。'
-)">
-塗装
+onclick="sendMail('seikan-tosou@toyodensei.co.jp','seikan-gyoumu@toyodensei.co.jp','塗装_購入品入荷(配信)','購入品が入荷しましたので引き取りをお願いいたします。\n※本アドレスは送信専用です。')">
+<img src="paint.png"> 塗装
 </button>
 
 <button class="blue"
-onclick="sendMail(
-'seikan-hinsyou@toyodensei.co.jp',
-'seikan-gyoumu@toyodensei.co.jp',
-'品質保証_購入品入荷(配信)',
-'購入品が入荷しましたので引き取りをお願いいたします。\n※本アドレスは送信専用です。'
-)">
-品質保証
+onclick="sendMail('seikan-hinsyou@toyodensei.co.jp','seikan-gyoumu@toyodensei.co.jp','品質保証_購入品入荷(配信)','購入品が入荷しましたので引き取りをお願いいたします。\n※本アドレスは送信専用です。')">
+<img src="quality_assurance.png"> 品質保証
 </button>
 
 <button class="blue"
-onclick="sendMail(
-'seikan-seisan@toyodensei.co.jp',
-'seikan-gyoumu@toyodensei.co.jp',
-'生産管理_購入品入荷(配信)',
-'購入品が入荷しましたので引き取りをお願いいたします。\n※本アドレスは送信専用です。'
-)">
-生産管理
+onclick="sendMail('seikan-seisan@toyodensei.co.jp','seikan-gyoumu@toyodensei.co.jp','生産管理_購入品入荷(配信)','購入品が入荷しましたので引き取りをお願いいたします。\n※本アドレスは送信専用です。')">
+<img src="production_management.png"> 生産管理
 </button>
 
 <button class="blue"
-onclick="sendMail(
-'seikan-gyoumu@toyodensei.co.jp',
-'',
-'業務_購入品入荷(配信)',
-'購入品が入荷しましたので引き取りをお願いいたします。\n※本アドレスは送信専用です。'
-)">
-業務
+onclick="sendMail('seikan-gyoumu@toyodensei.co.jp','','業務_購入品入荷(配信)','購入品が入荷しましたので引き取りをお願いいたします。\n※本アドレスは送信専用です。')">
+<img src="procurement.png"> 業務
 </button>
 
 <button class="red"
-onclick="sendMail(
-'seikan-bankin@toyodensei.co.jp,seikan-tosou@toyodensei.co.jp,seikan-hinsyou@toyodensei.co.jp,seikan-seisan@toyodensei.co.jp,seikan-gyoumu@toyodensei.co.jp',
-'',
-'全体_購入品入荷(配信)',
-'購入品が入荷しましたので引き取りをお願いいたします。\n※本アドレスは送信専用です。'
-)">
-全体
+onclick="sendMail('seikan-bankin@toyodensei.co.jp,seikan-tosou@toyodensei.co.jp,seikan-hinsyou@toyodensei.co.jp,seikan-seisan@toyodensei.co.jp,seikan-gyoumu@toyodensei.co.jp','','全体_購入品入荷(配信)','購入品が入荷しましたので引き取りをお願いいたします。\n※本アドレスは送信専用です。')">
+<img src="team.png"> 全体
 </button>
 
 <button class="orange"
-onclick="sendMail(
-'seikan-gyoumu@toyodensei.co.jp',
-'',
-'外注製作_仕込み板金入荷(配信)',
-'外注製作の仕込み板金が入荷しましたので入庫処理をお願いいたします。\n※本アドレスは送信専用です。'
-)">
-仕込み板金(外注)
+onclick="sendMail('seikan-gyoumu@toyodensei.co.jp','','外注製作_仕込み板金入荷(配信)','外注製作の仕込み板金が入荷しましたので入庫処理をお願いいたします。\n※本アドレスは送信専用です。')">
+<img src="outsourcing_stock.png"> 仕込み板金(外注)
 </button>
+
+</div>
 
 </body>
 </html>
