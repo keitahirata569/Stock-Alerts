@@ -2,36 +2,47 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>メール起動メニュー</title>
+<title>メール送信メニュー</title>
 <style>
-  body { font-family: sans-serif; padding: 20px; }
+  body {
+    font-family: sans-serif;
+    padding: 20px;
+    background: #f5f5f5;
+  }
+  h2 {
+    text-align: center;
+  }
   button {
     display: block;
     width: 100%;
-    padding: 15px;
-    margin: 10px 0;
+    padding: 18px;
+    margin: 12px 0;
     font-size: 18px;
+    border: none;
+    border-radius: 8px;
+    background-color: #0078d4;
+    color: white;
+  }
+  button:active {
+    background-color: #005fa3;
   }
 </style>
-<script>
-function openMail() {
-  // ① まずアプリ起動（mailto）
-  window.location.href = "mailto:seikan-gyoumu@toyodensei.co.jp?subject=%E5%A4%96%E6%B3%A8%E8%A3%BD%E4%BD%9C_%E4%BB%95%E8%BE%BC%E3%81%BF%E6%9D%BF%E9%87%91%E5%85%A5%E8%8D%B7(%E9%85%8D%E4%BF%A1)&body=%E5%A4%96%E6%B3%A8%E8%A3%BD%E4%BD%9C%E3%81%AE%E4%BB%95%E8%BE%BC%E3%81%BF%E6%9D%BF%E9%87%91%E3%81%8C%E5%85%A5%E8%8D%B7%E3%81%97%E3%81%BE%E3%81%97%E3%81%9F%E3%81%AE%E3%81%A7%E5%85%A5%E5%BA%AB%E5%87%A6%E7%90%86%E3%82%92%E3%81%8A%E9%A1%98%E3%81%84%E3%81%84%E3%81%9F%E3%81%97%E3%81%BE%E3%81%99%E3%80%82";
-
-  // ② うまくいかない場合の保険（1秒後にWeb版）
-  setTimeout(function() {
-    window.location.href = "https://outlook.office.com/mail/deeplink/compose?to=seikan-gyoumu@toyodensei.co.jp&subject=%E5%A4%96%E6%B3%A8%E8%A3%BD%E4%BD%9C_%E4%BB%95%E8%BE%BC%E3%81%BF%E6%9D%BF%E9%87%91%E5%85%A5%E8%8D%B7(%E9%85%8D%E4%BF%A1)&body=%E5%A4%96%E6%B3%A8%E8%A3%BD%E4%BD%9C%E3%81%AE%E4%BB%95%E8%BE%BC%E3%81%BF%E6%9D%BF%E9%87%91%E3%81%8C%E5%85%A5%E8%8D%B7%E3%81%97%E3%81%BE%E3%81%97%E3%81%9F%E3%81%AE%E3%81%A7%E5%85%A5%E5%BA%AB%E5%87%A6%E7%90%86%E3%82%92%E3%81%8A%E9%A1%98%E3%81%84%E3%81%84%E3%81%9F%E3%81%97%E3%81%BE%E3%81%99%E3%80%82";
-  }, 1000);
-}
-</script>
 </head>
 <body>
 
 <h2>メール送信メニュー</h2>
 
-<button onclick="openMail()">
+<button onclick="sendMail()">
 外注製作 仕込み板金 入荷
 </button>
+
+<script>
+function sendMail() {
+  if (confirm("メールを起動しますか？")) {
+    location.href = "mailto:seikan-gyoumu@toyodensei.co.jp?subject=%E5%A4%96%E6%B3%A8%E8%A3%BD%E4%BD%9C_%E4%BB%95%E8%BE%BC%E3%81%BF%E6%9D%BF%E9%87%91%E5%85%A5%E8%8D%B7(%E9%85%8D%E4%BF%A1)&body=%E5%A4%96%E6%B3%A8%E8%A3%BD%E4%BD%9C%E3%81%AE%E4%BB%95%E8%BE%BC%E3%81%BF%E6%9D%BF%E9%87%91%E3%81%8C%E5%85%A5%E8%8D%B7%E3%81%97%E3%81%BE%E3%81%97%E3%81%9F%E3%81%AE%E3%81%A7%E5%85%A5%E5%BA%AB%E5%87%A6%E7%90%86%E3%82%92%E3%81%8A%E9%A1%98%E3%81%84%E3%81%84%E3%81%9F%E3%81%97%E3%81%BE%E3%81%99%E3%80%82";
+  }
+}
+</script>
 
 </body>
 </html>
