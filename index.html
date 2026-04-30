@@ -1,183 +1,186 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>入荷連絡</title>
+  <title>入荷連絡</title>
 
-<link rel="icon" href="icon.png">
-<link rel="apple-touch-icon" href="icon.png">
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#0078d4">
+  <!-- ★追加（favicon.ico） -->
+  <link rel="icon" href="favicon.ico">
 
-<style>
-  body {
-    font-family: sans-serif;
-    padding: 16px;
-    background: #f0f2f5;
-  }
+  <!-- 既存（そのまま） -->
+  <link rel="icon" href="icon.png">
+  <link rel="apple-touch-icon" href="icon.png">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0078d4">
 
-  .card {
-    background: white;
-    border-radius: 18px;
-    padding: 20px;
-    box-shadow: 0 6px 16px rgba(0,0,0,0.1);
-  }
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 16px;
+      background: #f0f2f5;
+    }
 
-  h2 {
-    text-align: center;
-    font-size: 26px;
-    margin-bottom: 8px;
-  }
+    .card {
+      background: white;
+      border-radius: 18px;
+      padding: 20px;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+    }
 
-  .sub {
-    text-align: center;
-    font-size: 14px;
-    color: #666;
-    margin-bottom: 20px;
-  }
+    h2 {
+      text-align: center;
+      font-size: 26px;
+      margin-bottom: 8px;
+    }
 
-  button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
+    .sub {
+      text-align: center;
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 20px;
+    }
 
-    width: 100%;
-    padding: 18px;
-    margin: 10px 0;
-    font-size: 18px;
-    border: none;
-    border-radius: 12px;
-    color: white;
+    button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
 
-    transition: all 0.15s ease;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  }
+      width: 100%;
+      padding: 18px;
+      margin: 10px 0;
+      font-size: 18px;
+      border: none;
+      border-radius: 12px;
+      color: white;
 
-  button img {
-    width: 24px;
-    height: 24px;
-    filter: brightness(0) invert(1);
-  }
+      transition: all 0.15s ease;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
 
-  .blue { background: #0078d4; }
-  .orange { background: #f39c12; }
-  .red { background: #d9534f; }
+    button img {
+      width: 24px;
+      height: 24px;
+      filter: brightness(0) invert(1);
+    }
 
-  button:active {
-    transform: translateY(2px);
-    filter: brightness(0.9);
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-  }
-</style>
+    .blue { background: #0078d4; }
+    .orange { background: #f39c12; }
+    .red { background: #d9534f; }
 
-<script>
-function sendMail(to, cc, subject, body, dept) {
-  if (!confirm(dept + "へ入荷連絡しますか？")) return;
+    button:active {
+      transform: translateY(2px);
+      filter: brightness(0.9);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+  </style>
 
-  let url = "mailto:" + to;
+  <script>
+    function sendMail(to, cc, subject, body, dept) {
+      if (!confirm(dept + "へ入荷連絡しますか？")) return;
 
-  let params = [];
-  if (cc) params.push("cc=" + encodeURIComponent(cc));
-  if (subject) params.push("subject=" + encodeURIComponent(subject));
-  if (body) params.push("body=" + encodeURIComponent(body));
+      let url = "mailto:" + to;
 
-  if (params.length > 0) {
-    url += "?" + params.join("&");
-  }
+      let params = [];
+      if (cc) params.push("cc=" + encodeURIComponent(cc));
+      if (subject) params.push("subject=" + encodeURIComponent(subject));
+      if (body) params.push("body=" + encodeURIComponent(body));
 
-  location.href = url;
-}
-</script>
+      if (params.length > 0) {
+        url += "?" + params.join("&");
+      }
 
+      location.href = url;
+    }
+  </script>
 </head>
+
 <body>
 
-<div class="card">
+  <div class="card">
+    <h2>入荷連絡</h2>
+    <div class="sub">連絡したい部署を選択してください</div>
 
-<h2>入荷連絡</h2>
-<div class="sub">連絡したい部署を選択してください</div>
+    <button class="blue"
+      onclick="sendMail(
+        'seikan-bankin@toyodensei.co.jp',
+        'seikan-gyoumu@toyodensei.co.jp',
+        '板金_購入品入荷(配信)',
+        '購入品が入荷しましたので引き取りをお願いいたします。\n\n※本アドレスは送信専用です。',
+        '板金'
+      )">
+      <img src="sheet_metal.png"> 板金
+    </button>
 
-<button class="blue"
-onclick="sendMail(
-'seikan-bankin@toyodensei.co.jp',
-'seikan-gyoumu@toyodensei.co.jp',
-'板金_購入品入荷(配信)',
-'購入品が入荷しましたので引き取りをお願いいたします。\n\n※本アドレスは送信専用です。',
-'板金'
-)">
-<img src="sheet_metal.png"> 板金
-</button>
+    <button class="blue"
+      onclick="sendMail(
+        'seikan-tosou@toyodensei.co.jp',
+        'seikan-gyoumu@toyodensei.co.jp',
+        '塗装_購入品入荷(配信)',
+        '購入品が入荷しましたので引き取りをお願いいたします。\n\n※本アドレスは送信専用です。',
+        '塗装'
+      )">
+      <img src="paint.png"> 塗装
+    </button>
 
-<button class="blue"
-onclick="sendMail(
-'seikan-tosou@toyodensei.co.jp',
-'seikan-gyoumu@toyodensei.co.jp',
-'塗装_購入品入荷(配信)',
-'購入品が入荷しましたので引き取りをお願いいたします。\n\n※本アドレスは送信専用です。',
-'塗装'
-)">
-<img src="paint.png"> 塗装
-</button>
+    <button class="blue"
+      onclick="sendMail(
+        'seikan-hinsyou@toyodensei.co.jp',
+        'seikan-gyoumu@toyodensei.co.jp',
+        '品質保証_購入品入荷(配信)',
+        '購入品が入荷しましたので引き取りをお願いいたします。\n\n※本アドレスは送信専用です。',
+        '品質保証'
+      )">
+      <img src="quality_assurance.png"> 品質保証
+    </button>
 
-<button class="blue"
-onclick="sendMail(
-'seikan-hinsyou@toyodensei.co.jp',
-'seikan-gyoumu@toyodensei.co.jp',
-'品質保証_購入品入荷(配信)',
-'購入品が入荷しましたので引き取りをお願いいたします。\n\n※本アドレスは送信専用です。',
-'品質保証'
-)">
-<img src="quality_assurance.png"> 品質保証
-</button>
+    <button class="blue"
+      onclick="sendMail(
+        'seikan-seisan@toyodensei.co.jp',
+        'seikan-gyoumu@toyodensei.co.jp',
+        '生産管理_購入品入荷(配信)',
+        '購入品が入荷しましたので引き取りをお願いいたします。\n\n※本アドレスは送信専用です。',
+        '生産管理'
+      )">
+      <img src="production_management.png"> 生産管理
+    </button>
 
-<button class="blue"
-onclick="sendMail(
-'seikan-seisan@toyodensei.co.jp',
-'seikan-gyoumu@toyodensei.co.jp',
-'生産管理_購入品入荷(配信)',
-'購入品が入荷しましたので引き取りをお願いいたします。\n\n※本アドレスは送信専用です。',
-'生産管理'
-)">
-<img src="production_management.png"> 生産管理
-</button>
+    <button class="blue"
+      onclick="sendMail(
+        'seikan-gyoumu@toyodensei.co.jp',
+        '',
+        '業務_購入品入荷(配信)',
+        '購入品が入荷しましたので引き取りをお願いいたします。\n\n※本アドレスは送信専用です。',
+        '業務'
+      )">
+      <img src="procurement.png"> 業務
+    </button>
 
-<button class="blue"
-onclick="sendMail(
-'seikan-gyoumu@toyodensei.co.jp',
-'',
-'業務_購入品入荷(配信)',
-'購入品が入荷しましたので引き取りをお願いいたします。\n\n※本アドレスは送信専用です。',
-'業務'
-)">
-<img src="procurement.png"> 業務
-</button>
+    <button class="red"
+      onclick="sendMail(
+        'seikan-bankin@toyodensei.co.jp,seikan-tosou@toyodensei.co.jp,seikan-hinsyou@toyodensei.co.jp,seikan-seisan@toyodensei.co.jp,seikan-gyoumu@toyodensei.co.jp',
+        '',
+        '全体_購入品入荷(配信)',
+        '購入品が入荷しましたので引き取りをお願いいたします。\n\n※本アドレスは送信専用です。',
+        '全体'
+      )">
+      <img src="team.png"> 全体
+    </button>
 
-<button class="red"
-onclick="sendMail(
-'seikan-bankin@toyodensei.co.jp,seikan-tosou@toyodensei.co.jp,seikan-hinsyou@toyodensei.co.jp,seikan-seisan@toyodensei.co.jp,seikan-gyoumu@toyodensei.co.jp',
-'',
-'全体_購入品入荷(配信)',
-'購入品が入荷しましたので引き取りをお願いいたします。\n\n※本アドレスは送信専用です。',
-'全体'
-)">
-<img src="team.png"> 全体
-</button>
+    <button class="orange"
+      onclick="sendMail(
+        'seikan-gyoumu@toyodensei.co.jp',
+        '',
+        '外注製作_仕込み板金入荷(配信)',
+        '外注製作の仕込み板金が入荷しましたので入庫処理をお願いいたします。\n\n※本アドレスは送信専用です。',
+        '仕込み板金(外注)'
+      )">
+      <img src="outsourcing_stock.png"> 仕込み板金(外注)
+    </button>
 
-<button class="orange"
-onclick="sendMail(
-'seikan-gyoumu@toyodensei.co.jp',
-'',
-'外注製作_仕込み板金入荷(配信)',
-'外注製作の仕込み板金が入荷しましたので入庫処理をお願いいたします。\n\n※本アドレスは送信専用です。',
-'仕込み板金(外注)'
-)">
-<img src="outsourcing_stock.png"> 仕込み板金(外注)
-</button>
-
-</div>
+  </div>
 
 </body>
 </html>
