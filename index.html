@@ -6,10 +6,7 @@
 
   <title>入荷連絡</title>
 
-  <!-- ★追加（favicon.ico） -->
   <link rel="icon" href="favicon.ico">
-
-  <!-- 既存（そのまま） -->
   <link rel="icon" href="icon.png">
   <link rel="apple-touch-icon" href="icon.png">
   <link rel="manifest" href="manifest.json">
@@ -20,6 +17,10 @@
       font-family: sans-serif;
       padding: 16px;
       background: #f0f2f5;
+
+      /* ★PCでも中央固定 */
+      display: flex;
+      justify-content: center;
     }
 
     .card {
@@ -27,6 +28,10 @@
       border-radius: 18px;
       padding: 20px;
       box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+
+      /* ★横に伸びないよう追加 */
+      width: 100%;
+      max-width: 480px;
     }
 
     h2 {
@@ -58,6 +63,7 @@
 
       transition: all 0.15s ease;
       box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      cursor: pointer;
     }
 
     button img {
