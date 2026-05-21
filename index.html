@@ -15,183 +15,245 @@
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 
 <style>
-body {
-  font-family: sans-serif;
-  padding: 16px;
-  background: #f0f2f5;
-  display: flex;
-  justify-content: center;
+
+body{
+  font-family:sans-serif;
+  padding:16px;
+  background:#f0f2f5;
+  display:flex;
+  justify-content:center;
 }
 
-.card {
-  background: white;
-  border-radius: 18px;
-  padding: 20px;
-  box-shadow: 0 6px 16px rgba(0,0,0,0.1);
-  width: 100%;
-  max-width: 480px;
+.card{
+  background:white;
+  border-radius:18px;
+  padding:20px;
+  box-shadow:0 6px 16px rgba(0,0,0,0.1);
+  width:100%;
+  max-width:480px;
 }
 
-h2 {
-  text-align: center;
-  font-size: 26px;
-  margin-bottom: 8px;
+h2{
+  text-align:center;
+  font-size:26px;
+  margin-bottom:8px;
 }
 
-.sub {
-  text-align: center;
-  font-size: 14px;
-  color: #666;
-  margin-bottom: 20px;
+.sub{
+  text-align:center;
+  font-size:14px;
+  color:#666;
+  margin-bottom:20px;
 }
 
-button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
+button{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
 
-  width: 100%;
-  padding: 18px;
-  margin: 10px 0;
-  font-size: 18px;
-  border: none;
-  border-radius: 12px;
-  color: white;
+  width:100%;
+  padding:18px;
+  margin:10px 0;
+  font-size:18px;
+  border:none;
+  border-radius:12px;
+  color:white;
 
-  transition: all 0.15s ease;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  cursor: pointer;
+  transition:all 0.15s ease;
+  box-shadow:0 4px 8px rgba(0,0,0,0.1);
+  cursor:pointer;
 }
 
-button img {
-  width: 24px;
-  height: 24px;
-  filter: brightness(0) invert(1);
+button img{
+  width:24px;
+  height:24px;
+  filter:brightness(0) invert(1);
 }
 
-.blue { background: #0078d4; }
-.orange { background: #f39c12; }
-.red { background: #d9534f; }
-.green { background: #28a745; }
-.gray { background: #6c757d; }
-.black { background: #333; }
+.blue{ background:#0078d4; }
+.orange{ background:#f39c12; }
+.red{ background:#d9534f; }
+.green{ background:#28a745; }
+.gray{ background:#6c757d; }
+.black{ background:#333; }
 
-button:active {
-  transform: translateY(2px);
-  filter: brightness(0.9);
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+button:active{
+  transform:translateY(2px);
+  filter:brightness(0.9);
 }
 
-input[type="file"] {
-  display: none;
+.modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:9999;
+  background:rgba(0,0,0,0.5);
+
+  align-items:center;
+  justify-content:center;
+  padding:16px;
 }
 
-/* モーダル */
-
-.modal {
-  display: none;
-  position: fixed;
-  z-index: 9999;
-  inset: 0;
-  background: rgba(0,0,0,0.45);
-  align-items: center;
-  justify-content: center;
-  padding: 16px;
+.modal-content{
+  width:100%;
+  max-width:480px;
+  background:white;
+  border-radius:18px;
+  padding:18px;
 }
 
-.modal-content {
-  background: white;
-  width: 100%;
-  max-width: 460px;
-  border-radius: 18px;
-  padding: 20px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+/* 横長カメラ */
+
+.camera-window{
+  position:relative;
+  width:100%;
+  height:120px;
+  overflow:hidden;
+  border-radius:14px;
+  background:black;
+  margin-bottom:12px;
 }
 
-.modal-content h3 {
-  margin-top: 0;
-  text-align: center;
+#cameraView{
+  width:100%;
+  height:100%;
+  object-fit:cover;
 }
 
-textarea {
-  width: 100%;
-  height: 180px;
-  font-size: 16px;
-  padding: 10px;
-  box-sizing: border-box;
-  border-radius: 10px;
-  border: 1px solid #ccc;
+.scan-guide{
+  position:absolute;
+  inset:0;
+  border:3px solid #00ff88;
+  border-radius:14px;
+  pointer-events:none;
+  box-sizing:border-box;
 }
 
-#status {
-  text-align: center;
-  color: #555;
-  margin-bottom: 10px;
+textarea{
+  width:100%;
+  height:180px;
+  border:1px solid #ccc;
+  border-radius:10px;
+  padding:10px;
+  font-size:16px;
+  box-sizing:border-box;
 }
+
+#status{
+  text-align:center;
+  color:#555;
+  margin-bottom:10px;
+}
+
 </style>
 
 <script>
 
 let selectedMail = null;
+let cameraStream = null;
 
-function selectDept(to, cc, subject, body, dept) {
+function selectDept(to, cc, subject, body, dept){
 
-  selectedMail = { to, cc, subject, body, dept };
+  selectedMail = {
+    to,
+    cc,
+    subject,
+    body,
+    dept
+  };
 
-  if (!confirm(dept + "へ入荷連絡しますか？")) return;
+  if(!confirm(dept + "へ入荷連絡しますか？")) return;
 
-  if (confirm("カメラで品名を読み取りますか？")) {
+  if(confirm("カメラで品名を読み取りますか？")){
 
-    document.getElementById("cameraInput").click();
+    startCamera();
 
-  } else {
+  }else{
 
     sendMail(false);
 
   }
 }
 
-function openModal() {
-  document.getElementById("ocrModal").style.display = "flex";
+async function startCamera(){
+
+  document.getElementById("cameraModal").style.display = "flex";
+
+  cameraStream = await navigator.mediaDevices.getUserMedia({
+    video:{
+      facingMode:"environment"
+    },
+    audio:false
+  });
+
+  document.getElementById("cameraView").srcObject = cameraStream;
 }
 
-function closeModal() {
+function stopCamera(){
 
-  document.getElementById("ocrModal").style.display = "none";
+  if(cameraStream){
 
-  document.getElementById("ocrText").value = "";
+    cameraStream.getTracks().forEach(track => track.stop());
 
-  document.getElementById("status").textContent = "";
+    cameraStream = null;
+  }
 
-  document.getElementById("cameraInput").value = "";
+  document.getElementById("cameraModal").style.display = "none";
 }
 
-async function ocrImage(file) {
+async function captureOCR(){
 
-  openModal();
+  const video = document.getElementById("cameraView");
+
+  const canvas = document.createElement("canvas");
+  const ctx = canvas.getContext("2d");
+
+  /* 表示している横長範囲だけOCR */
+
+  const cropWidth = video.videoWidth;
+  const cropHeight = video.videoHeight * 0.20;
+
+  const cropX = 0;
+  const cropY = (video.videoHeight - cropHeight) / 2;
+
+  canvas.width = cropWidth;
+  canvas.height = cropHeight;
+
+  ctx.drawImage(
+    video,
+    cropX,
+    cropY,
+    cropWidth,
+    cropHeight,
+    0,
+    0,
+    cropWidth,
+    cropHeight
+  );
 
   document.getElementById("status").textContent =
     "OCR読み取り中です...";
 
-  document.getElementById("ocrText").value = "";
-
   const result = await Tesseract.recognize(
-    file,
+    canvas,
     "jpn+eng",
     {
-      logger: m => {
+      logger:m=>{
 
-        if (m.status === "recognizing text") {
+        if(m.status === "recognizing text"){
 
           document.getElementById("status").textContent =
             "OCR読み取り中... " +
             Math.round(m.progress * 100) + "%";
-
         }
       }
     }
   );
+
+  stopCamera();
+
+  document.getElementById("ocrModal").style.display = "flex";
 
   document.getElementById("ocrText").value =
     result.data.text.trim();
@@ -200,18 +262,23 @@ async function ocrImage(file) {
     "OCR結果を確認・編集してください。";
 }
 
-function sendMail(useOcr) {
+function closeOcrModal(){
 
-  if (!selectedMail) return;
+  document.getElementById("ocrModal").style.display = "none";
+
+  document.getElementById("ocrText").value = "";
+}
+
+function sendMail(useOcr){
 
   let body = selectedMail.body;
 
-  if (useOcr) {
+  if(useOcr){
 
     const ocrText =
       document.getElementById("ocrText").value.trim();
 
-    if (ocrText !== "") {
+    if(ocrText !== ""){
 
       body +=
         "\n\n【読み取り内容】\n" +
@@ -223,54 +290,33 @@ function sendMail(useOcr) {
 
   let params = [];
 
-  if (selectedMail.cc) {
+  if(selectedMail.cc){
+
     params.push(
       "cc=" +
       encodeURIComponent(selectedMail.cc)
     );
   }
 
-  if (selectedMail.subject) {
-    params.push(
-      "subject=" +
-      encodeURIComponent(selectedMail.subject)
-    );
-  }
+  params.push(
+    "subject=" +
+    encodeURIComponent(selectedMail.subject)
+  );
 
-  if (body) {
-    params.push(
-      "body=" +
-      encodeURIComponent(body)
-    );
-  }
+  params.push(
+    "body=" +
+    encodeURIComponent(body)
+  );
 
-  if (params.length > 0) {
+  url += "?" + params.join("&");
 
-    url += "?" + params.join("&");
-
-  }
-
-  closeModal();
+  closeOcrModal();
 
   location.href = url;
 }
 
-window.addEventListener("DOMContentLoaded", () => {
-
-  document.getElementById("cameraInput")
-    .addEventListener("change", e => {
-
-      const file = e.target.files[0];
-
-      if (file) {
-
-        ocrImage(file);
-
-      }
-    });
-});
-
 </script>
+
 </head>
 
 <body>
@@ -283,15 +329,6 @@ window.addEventListener("DOMContentLoaded", () => {
     連絡したい部署を選択してください
   </div>
 
-  <input
-    id="cameraInput"
-    type="file"
-    accept="image/*"
-    capture="environment"
-  >
-
-  <!-- 板金 -->
-
   <button class="blue"
     onclick="selectDept(
       'seikan-bankin@toyodensei.co.jp',
@@ -300,10 +337,8 @@ window.addEventListener("DOMContentLoaded", () => {
       '購入品が入荷しましたので引き取りをお願いいたします。\n\n※本アドレスは送信専用です。',
       '板金'
     )">
-    <img src='sheet_metal.png'> 板金
+    <img src="sheet_metal.png"> 板金
   </button>
-
-  <!-- 塗装 -->
 
   <button class="blue"
     onclick="selectDept(
@@ -313,10 +348,8 @@ window.addEventListener("DOMContentLoaded", () => {
       '購入品が入荷しましたので引き取りをお願いいたします。\n\n※本アドレスは送信専用です。',
       '塗装'
     )">
-    <img src='paint.png'> 塗装
+    <img src="paint.png"> 塗装
   </button>
-
-  <!-- 品質保証 -->
 
   <button class="blue"
     onclick="selectDept(
@@ -326,10 +359,8 @@ window.addEventListener("DOMContentLoaded", () => {
       '購入品が入荷しましたので引き取りをお願いいたします。\n\n※本アドレスは送信専用です。',
       '品質保証'
     )">
-    <img src='quality_assurance.png'> 品質保証
+    <img src="quality_assurance.png"> 品質保証
   </button>
-
-  <!-- 生産管理 -->
 
   <button class="blue"
     onclick="selectDept(
@@ -339,10 +370,8 @@ window.addEventListener("DOMContentLoaded", () => {
       '購入品が入荷しましたので引き取りをお願いいたします。\n\n※本アドレスは送信専用です。',
       '生産管理'
     )">
-    <img src='production_management.png'> 生産管理
+    <img src="production_management.png"> 生産管理
   </button>
-
-  <!-- 業務 -->
 
   <button class="blue"
     onclick="selectDept(
@@ -352,10 +381,8 @@ window.addEventListener("DOMContentLoaded", () => {
       '購入品が入荷しましたので引き取りをお願いいたします。\n\n※本アドレスは送信専用です。',
       '業務'
     )">
-    <img src='procurement.png'> 業務
+    <img src="procurement.png"> 業務
   </button>
-
-  <!-- 全体 -->
 
   <button class="red"
     onclick="selectDept(
@@ -365,10 +392,8 @@ window.addEventListener("DOMContentLoaded", () => {
       '購入品が入荷しましたので引き取りをお願いいたします。\n\n※本アドレスは送信専用です。',
       '全体'
     )">
-    <img src='team.png'> 全体
+    <img src="team.png"> 全体
   </button>
-
-  <!-- 仕込み板金 -->
 
   <button class="orange"
     onclick="selectDept(
@@ -378,24 +403,54 @@ window.addEventListener("DOMContentLoaded", () => {
       '森さん\n\n仕込み板金が完成・入荷しましたので入庫処理をお願いいたします。\n\n※本アドレスは送信専用です。',
       '仕込み板金'
     )">
-    <img src='outsourcing_stock.png'> 仕込み板金
+    <img src="outsourcing_stock.png"> 仕込み板金
   </button>
 
 </div>
 
-<!-- OCRモーダル -->
+<!-- カメラ -->
+
+<div id="cameraModal" class="modal">
+
+  <div class="modal-content">
+
+    <div class="camera-window">
+
+      <video
+        id="cameraView"
+        autoplay
+        playsinline
+      ></video>
+
+      <div class="scan-guide"></div>
+
+    </div>
+
+    <button class="green"
+      onclick="captureOCR()">
+      この範囲を読み取る
+    </button>
+
+    <button class="black"
+      onclick="stopCamera()">
+      キャンセル
+    </button>
+
+  </div>
+
+</div>
+
+<!-- OCR -->
 
 <div id="ocrModal" class="modal">
 
   <div class="modal-content">
 
-    <h3>OCR結果の確認</h3>
-
     <div id="status"></div>
 
     <textarea
       id="ocrText"
-      placeholder="OCR結果がここに表示されます。編集できます。"
+      placeholder="OCR結果を確認・編集してください"
     ></textarea>
 
     <button class="green"
@@ -409,7 +464,7 @@ window.addEventListener("DOMContentLoaded", () => {
     </button>
 
     <button class="black"
-      onclick="closeModal()">
+      onclick="closeOcrModal()">
       キャンセル
     </button>
 
